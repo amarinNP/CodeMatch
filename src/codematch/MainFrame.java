@@ -557,13 +557,23 @@ public class MainFrame extends javax.swing.JFrame {
     private void third_textFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_third_textFieldKeyTyped
         // TODO add your handling code here:
         char c = evt.getKeyChar();
-        if(!Character.isDigit(c)){evt.consume();}
+        if(Character.isDigit(c) || c == '.'){
+            third_textField.setEditable(true);
+        }
+        else{
+            third_textField.setEditable(false);
+        }
     }//GEN-LAST:event_third_textFieldKeyTyped
 
     private void second_textFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_second_textFieldKeyTyped
         // TODO add your handling code here:
         char c = evt.getKeyChar();
-        if(!Character.isDigit(c)){evt.consume();}
+        if(Character.isDigit(c) || c == '.'){
+            second_textField.setEditable(true);
+        }
+        else{
+            second_textField.setEditable(false);
+        }
     }//GEN-LAST:event_second_textFieldKeyTyped
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
