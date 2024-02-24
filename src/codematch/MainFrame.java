@@ -38,31 +38,67 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     private boolean isEmpty(){
-        if(first_textField.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Product Name is required!", "Warning", 2);
-            return true;
+        if(isItems){
+            if(first_textField.getText().isEmpty()){
+                JOptionPane.showMessageDialog(this, "Product Name is required!", "Warning", 2);
+                return true;
+            }
+            if((second_textField.getText().equals("")) ){
+                JOptionPane.showMessageDialog(this, "Product Price is required!", "Warning", 2);
+                return true;
+         }
+            if(Double.parseDouble(second_textField.getText()) <= 0){
+                JOptionPane.showMessageDialog(this, "Plase, increase the product price", "Warning", 2);
+                return true;
+            }
+            if((third_textField.getText().equals("")) ){
+                JOptionPane.showMessageDialog(this, "Product Quantity is required!", "Warning", 2);
+                return true;
+            }
+            if(Integer.parseInt(third_textField.getText()) <= 0){
+                JOptionPane.showMessageDialog(this, "Plase, increase the product quantity", "Warning", 2);
+                return true;
+            }
+            if(first_comboBox.getSelectedIndex() == -1){
+                JOptionPane.showMessageDialog(this, "Plase, select the category", "Warning", 2);
+                return true;
+            }
         }
-        if((second_textField.getText().equals("")) ){
-            JOptionPane.showMessageDialog(this, "Product Price is required!", "Warning", 2);
-            return true;
+        else if(!isItems){
+            if((first_textField.getText().equals("")) ){
+                JOptionPane.showMessageDialog(this, "Discount is required!", "Warning", 2);
+                return true;
+            }
+            if(Integer.parseInt(first_textField.getText()) <= 0){
+                JOptionPane.showMessageDialog(this, "Plase, increase the product quantity", "Warning", 2);
+                return true;
+            }
+            if((second_textField.getText().equals("")) ){
+                JOptionPane.showMessageDialog(this, "Min is required!", "Warning", 2);
+                return true;
+            }
+            if((Integer.parseInt(second_textField.getText()) < 0) || (Integer.parseInt(second_textField.getText()) > Integer.parseInt(third_textField.getText()))){
+                
+                JOptionPane.showMessageDialog(this, "Min is incorrect!", "Warning", 2);
+                return true;
+            }
+            if((third_textField.getText().equals("")) ){
+                JOptionPane.showMessageDialog(this, "Max is required!", "Warning", 2);
+                return true;
+            }
+            if((Integer.parseInt(third_textField.getText()) < 0) || (Integer.parseInt(third_textField.getText()) < Integer.parseInt(second_textField.getText()))){
+                JOptionPane.showMessageDialog(this, "Max is incorrect!", "Warning", 2);
+                return true;
+            }
+            if(first_comboBox.getSelectedIndex() == -1){
+                JOptionPane.showMessageDialog(this, "Plase, select the category", "Warning", 2);
+                return true;
+            }
+            if(!jRadioButton1.isSelected() && !jRadioButton2.isSelected()){
+                JOptionPane.showMessageDialog(this, "Plase, select the type", "Warning", 2);
+                return true;
+            }
         }
-        if(Double.parseDouble(second_textField.getText()) <= 0){
-            JOptionPane.showMessageDialog(this, "Plase, increase the product price", "Warning", 2);
-            return true;
-        }
-        if((third_textField.getText().equals("")) ){
-            JOptionPane.showMessageDialog(this, "Product Quantity is required!", "Warning", 2);
-            return true;
-        }
-        if(Integer.parseInt(third_textField.getText()) <= 0){
-            JOptionPane.showMessageDialog(this, "Plase, increase the product quantity", "Warning", 2);
-            return true;
-        }
-        if(first_comboBox.getSelectedIndex() == -1){
-            JOptionPane.showMessageDialog(this, "Plase, select the category", "Warning", 2);
-            return true;
-        }
-        
         return false;
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -88,6 +124,8 @@ public class MainFrame extends javax.swing.JFrame {
         first_comboBox = new javax.swing.JComboBox<>();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
+        total_label = new javax.swing.JLabel();
+        total_label1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CodeMatch");
@@ -118,6 +156,11 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         coupon_table.getTableHeader().setReorderingAllowed(false);
+        coupon_table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                coupon_tableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(coupon_table);
         if (coupon_table.getColumnModel().getColumnCount() > 0) {
             coupon_table.getColumnModel().getColumn(0).setResizable(false);
@@ -144,6 +187,17 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         product_table.getTableHeader().setReorderingAllowed(false);
+        product_table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                product_tableMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                product_tableMouseExited(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                product_tableMouseReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(product_table);
         if (product_table.getColumnModel().getColumnCount() > 0) {
             product_table.getColumnModel().getColumn(0).setResizable(false);
@@ -246,6 +300,12 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        total_label.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        total_label.setText("Total :");
+
+        total_label1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        total_label1.setText("0");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -280,22 +340,25 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(39, 39, 39)
                                 .addComponent(delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1))
+                        .addContainerGap(12, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(124, 124, 124)
+                        .addComponent(total_label)
+                        .addGap(18, 18, 18)
+                        .addComponent(total_label1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(70, 70, 70)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(first_label)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -323,8 +386,17 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(11, Short.MAX_VALUE))
+                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(total_label)
+                            .addComponent(total_label1))))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -357,6 +429,7 @@ public class MainFrame extends javax.swing.JFrame {
             jRadioButton1.setVisible(true);
             jRadioButton2.setVisible(true);
             
+            clearText();
             shopType.clearSelection();
             
             isItems = false;
@@ -375,6 +448,7 @@ public class MainFrame extends javax.swing.JFrame {
             jRadioButton1.setVisible(false);
             jRadioButton2.setVisible(false);
             
+            clearText();
             shopType.clearSelection();
             
             isItems = true;
@@ -383,46 +457,81 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        if(!isEmpty() && isItems){
-            String name = first_textField.getText();
-            String category = first_comboBox.getSelectedItem().toString();
-            double price = Double.parseDouble(second_textField.getText());
-            int quantity = Integer.parseInt(third_textField.getText());
-            String total = String.format("%.2f",(price * (double)quantity));
+        if (isItems){
+            if(!isEmpty()){
+                String name = first_textField.getText();
+                String category = first_comboBox.getSelectedItem().toString();
+                double price = Double.parseDouble(second_textField.getText());
+                int quantity = Integer.parseInt(third_textField.getText());
+                String total = String.format("%.2f",(price * (double)quantity));
             
-            String data[] = {name,category,second_textField.getText(),third_textField.getText(),total};
-            DefaultTableModel tblModel = (DefaultTableModel)product_table.getModel();
-            tblModel.addRow(data);
+                String data[] = {name,category,second_textField.getText(),third_textField.getText(),total};
+                DefaultTableModel tblItemsModel = (DefaultTableModel)product_table.getModel();
+                tblItemsModel.addRow(data);
+                
+                double totalPrice = Double.parseDouble(total_label1.getText());
+                totalPrice += Double.parseDouble(total);
+                total_label1.setText(String.format("%.2f",totalPrice));
             
-            clearText();
+                clearText();
+            }
         }
         else{
-            int discount = Integer.parseInt(first_textField.getText());
-            int min_discount = Integer.parseInt(second_textField.getText());
-            int max_discount = Integer.parseInt(third_textField.getText());
+            if(!isEmpty()){
+                String category = first_comboBox.getSelectedItem().toString();
+                String type = "";
+                if (jRadioButton1.isSelected()){
+                    type = "Shopee";
+                }
+                else if (jRadioButton2.isSelected()){
+                    type = "Shop";
+                }
+                String data[] = {first_textField.getText(),type,category,second_textField.getText(),third_textField.getText()};
+                DefaultTableModel tblCousModel = (DefaultTableModel)coupon_table.getModel();
+                tblCousModel.addRow(data);
+            
+                clearText();
+            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void delete_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_btnActionPerformed
         // TODO add your handling code here:
         DefaultTableModel tblModel = (DefaultTableModel)product_table.getModel();
-        if(product_table.getRowCount()==0){
+        DefaultTableModel tblCouModel = (DefaultTableModel)coupon_table.getModel();
+        if(product_table.getRowCount()==0 && coupon_table.getRowCount()==0){
             JOptionPane.showMessageDialog(this, "Table is empty", "Warning", 2);
         }
-        else if(product_table.getSelectedRowCount()<=0){
+        else if(product_table.getSelectedRowCount()<=0 && coupon_table.getSelectedRowCount()<=0){
             JOptionPane.showMessageDialog(this, "Please select row to delete", "Warning", 2);
         }
         else{
+       
             if(product_table.getSelectedRow() != 1 || product_table.getSelectedRow() > 0){
-                int cnt = product_table.getSelectedRow();
-                while (cnt != -1){
-                    int modelCnt = product_table.convertRowIndexToModel(cnt);
+                int cnt_items = product_table.getSelectedRow();
+                while (cnt_items != -1){
+                    int modelCnt = product_table.convertRowIndexToModel(cnt_items);
+                    String total = tblModel.getValueAt(cnt_items,4).toString();
+                    System.out.println(total);
                     tblModel.removeRow(modelCnt);
-                    cnt = product_table.getSelectedRow();
+                    cnt_items = product_table.getSelectedRow();
+                    
+                    double totalPrice = Double.parseDouble(total_label1.getText());                   
+                    totalPrice -= Double.parseDouble(total);
+                    total_label1.setText(String.format("%.2f",totalPrice));
                 }
             }
-            
+            if (coupon_table.getSelectedRow() != 1 || coupon_table.getSelectedRow() > 0){
+                int cnt_cou = coupon_table.getSelectedRow();
+                while (cnt_cou != -1){
+                    int modelCnt = coupon_table.convertRowIndexToModel(cnt_cou);
+                    tblCouModel.removeRow(modelCnt);
+                    cnt_cou = coupon_table.getSelectedRow();
+                }
+            }
         }
+            
+        
     }//GEN-LAST:event_delete_btnActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -448,15 +557,13 @@ public class MainFrame extends javax.swing.JFrame {
     private void third_textFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_third_textFieldKeyTyped
         // TODO add your handling code here:
         char c = evt.getKeyChar();
-        if(Character.isLetter(c)){third_textField.setEditable(false);}
-        else{second_textField.setEditable(true);}
+        if(!Character.isDigit(c)){evt.consume();}
     }//GEN-LAST:event_third_textFieldKeyTyped
 
     private void second_textFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_second_textFieldKeyTyped
         // TODO add your handling code here:
         char c = evt.getKeyChar();
-        if(Character.isLetter(c)){second_textField.setEditable(false);}
-        else{second_textField.setEditable(true);}
+        if(!Character.isDigit(c)){evt.consume();}
     }//GEN-LAST:event_second_textFieldKeyTyped
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
@@ -466,6 +573,30 @@ public class MainFrame extends javax.swing.JFrame {
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton2ActionPerformed
+
+    private void product_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_product_tableMouseClicked
+        // TODO add your handling code here:
+        if(evt.getClickCount() > 1)
+            product_table.clearSelection();
+        
+        
+    }//GEN-LAST:event_product_tableMouseClicked
+
+    private void product_tableMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_product_tableMouseExited
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_product_tableMouseExited
+
+    private void product_tableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_product_tableMouseReleased
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_product_tableMouseReleased
+
+    private void coupon_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_coupon_tableMouseClicked
+        // TODO add your handling code here:
+        if(evt.getClickCount() > 1)
+            product_table.clearSelection();
+    }//GEN-LAST:event_coupon_tableMouseClicked
 
     
     /**
@@ -524,5 +655,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.ButtonGroup shopType;
     private javax.swing.JLabel third_label;
     private javax.swing.JTextField third_textField;
+    private javax.swing.JLabel total_label;
+    private javax.swing.JLabel total_label1;
     // End of variables declaration//GEN-END:variables
 }
