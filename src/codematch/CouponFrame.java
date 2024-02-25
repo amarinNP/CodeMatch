@@ -252,7 +252,7 @@ public class CouponFrame extends javax.swing.JFrame {
         fourth_label.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         fourth_label.setText("Category");
 
-        category_comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mall", "Khum", "Normal" }));
+        category_comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Free_Shipping", "Absolute", "Percentage" }));
         category_comboBox.setSelectedIndex(-1);
         category_comboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
