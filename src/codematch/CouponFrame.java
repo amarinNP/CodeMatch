@@ -4,20 +4,26 @@
  */
 package codematch;
 
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
  * @author nonpr
  */
-public class MainFrame extends javax.swing.JFrame {
+public class CouponFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
-    public MainFrame() {
+    public CouponFrame() {
         initComponents();
+        
     }
+    
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,41 +33,48 @@ public class MainFrame extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     
     private void clearText(){
-        product_name_textField.setText("");
-        price_textField.setText("");
-        quantity_textField.setText("");
+        discount_textField.setText("");
+        min_textField.setText("");
+        max_textField.setText("");
         category_comboBox.setSelectedIndex(-1);
     }
     
     private boolean isEmpty(){
-        if(shop_name_textField.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Shop Name is required!", "Warning", 2);
-            return true;
-        }
-        if(product_name_textField.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Product Name is required!", "Warning", 2);
-            return true;
-        }
-        if((price_textField.getText().equals("")) ){
-            JOptionPane.showMessageDialog(this, "Product Price is required!", "Warning", 2);
-            return true;
-        }
-        if(Double.parseDouble(price_textField.getText()) <= 0){
-            JOptionPane.showMessageDialog(this, "Plase, increase the product price", "Warning", 2);
-            return true;
-        }
-        if((quantity_textField.getText().equals("")) ){
-            JOptionPane.showMessageDialog(this, "Product Quantity is required!", "Warning", 2);
-            return true;
-        }
-        if(Integer.parseInt(quantity_textField.getText()) <= 0){
-            JOptionPane.showMessageDialog(this, "Plase, increase the product quantity", "Warning", 2);
-            return true;
-        }
-        if(category_comboBox.getSelectedIndex() == -1){
-            JOptionPane.showMessageDialog(this, "Plase, select the category", "Warning", 2);
-            return true;
-        }
+        
+            if((discount_textField.getText().equals("")) ){
+                JOptionPane.showMessageDialog(this, "Discount is required!", "Warning", 2);
+                return true;
+            }
+            if(Integer.parseInt(discount_textField.getText()) <= 0){
+                JOptionPane.showMessageDialog(this, "Plase, increase the product quantity", "Warning", 2);
+                return true;
+            }
+            if((min_textField.getText().equals("")) ){
+                JOptionPane.showMessageDialog(this, "Min is required!", "Warning", 2);
+                return true;
+            }
+            if((Integer.parseInt(min_textField.getText()) < 0) || (Integer.parseInt(min_textField.getText()) > Integer.parseInt(max_textField.getText()))){
+                
+                JOptionPane.showMessageDialog(this, "Min is incorrect!", "Warning", 2);
+                return true;
+            }
+            if((max_textField.getText().equals("")) ){
+                JOptionPane.showMessageDialog(this, "Max is required!", "Warning", 2);
+                return true;
+            }
+            if((Integer.parseInt(max_textField.getText()) < 0) || (Integer.parseInt(max_textField.getText()) < Integer.parseInt(min_textField.getText()))){
+                JOptionPane.showMessageDialog(this, "Max is incorrect!", "Warning", 2);
+                return true;
+            }
+            if(category_comboBox.getSelectedIndex() == -1){
+                JOptionPane.showMessageDialog(this, "Plase, select the category", "Warning", 2);
+                return true;
+            }
+            if(!shopee_jRadioButton.isSelected() && !shop_jRadioButton.isSelected()){
+                JOptionPane.showMessageDialog(this, "Plase, select the type", "Warning", 2);
+                return true;
+            }
+        
         return false;
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -75,9 +88,9 @@ public class MainFrame extends javax.swing.JFrame {
         coupon_table = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         product_table = new javax.swing.JTable();
-        product_name_textField = new javax.swing.JTextField();
-        price_textField = new javax.swing.JTextField();
-        quantity_textField = new javax.swing.JTextField();
+        discount_textField = new javax.swing.JTextField();
+        min_textField = new javax.swing.JTextField();
+        max_textField = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         delete_btn = new javax.swing.JButton();
@@ -85,10 +98,10 @@ public class MainFrame extends javax.swing.JFrame {
         second_label = new javax.swing.JLabel();
         fourth_label = new javax.swing.JLabel();
         category_comboBox = new javax.swing.JComboBox<>();
+        shopee_jRadioButton = new javax.swing.JRadioButton();
+        shop_jRadioButton = new javax.swing.JRadioButton();
         total_label = new javax.swing.JLabel();
         total_label1 = new javax.swing.JLabel();
-        first_label1 = new javax.swing.JLabel();
-        shop_name_textField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CodeMatch");
@@ -97,10 +110,10 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
         first_label.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        first_label.setText("Product Name");
+        first_label.setText("Discount");
 
         third_label.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        third_label.setText("Quantity");
+        third_label.setText("Max Discount");
 
         coupon_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -138,11 +151,11 @@ public class MainFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Shop name", "Product Name", "Category", "Price", "Quantity", "Total"
+                "Product Name", "Category", "Price", "Quantity", "Total"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -168,37 +181,36 @@ public class MainFrame extends javax.swing.JFrame {
             product_table.getColumnModel().getColumn(2).setResizable(false);
             product_table.getColumnModel().getColumn(3).setResizable(false);
             product_table.getColumnModel().getColumn(4).setResizable(false);
-            product_table.getColumnModel().getColumn(5).setResizable(false);
         }
 
-        product_name_textField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        product_name_textField.addActionListener(new java.awt.event.ActionListener() {
+        discount_textField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        discount_textField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                product_name_textFieldActionPerformed(evt);
+                discount_textFieldActionPerformed(evt);
             }
         });
 
-        price_textField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        price_textField.addActionListener(new java.awt.event.ActionListener() {
+        min_textField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        min_textField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                price_textFieldActionPerformed(evt);
+                min_textFieldActionPerformed(evt);
             }
         });
-        price_textField.addKeyListener(new java.awt.event.KeyAdapter() {
+        min_textField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                price_textFieldKeyTyped(evt);
+                min_textFieldKeyTyped(evt);
             }
         });
 
-        quantity_textField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        quantity_textField.addActionListener(new java.awt.event.ActionListener() {
+        max_textField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        max_textField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                quantity_textFieldActionPerformed(evt);
+                max_textFieldActionPerformed(evt);
             }
         });
-        quantity_textField.addKeyListener(new java.awt.event.KeyAdapter() {
+        max_textField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                quantity_textFieldKeyTyped(evt);
+                max_textFieldKeyTyped(evt);
             }
         });
 
@@ -235,7 +247,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         second_label.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        second_label.setText("Price");
+        second_label.setText("Min Discount");
 
         fourth_label.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         fourth_label.setText("Category");
@@ -248,86 +260,102 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        shopType.add(shopee_jRadioButton);
+        shopee_jRadioButton.setText("Shopee");
+        shopee_jRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                shopee_jRadioButtonActionPerformed(evt);
+            }
+        });
+
+        shopType.add(shop_jRadioButton);
+        shop_jRadioButton.setText("Shop");
+        shop_jRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                shop_jRadioButtonActionPerformed(evt);
+            }
+        });
+
         total_label.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         total_label.setText("Total :");
 
         total_label1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         total_label1.setText("0");
 
-        first_label1.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        first_label1.setText("Shop name");
-
-        shop_name_textField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        shop_name_textField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                shop_name_textFieldActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fourth_label)
+                            .addComponent(first_label)
+                            .addComponent(second_label)
+                            .addComponent(third_label)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(discount_textField, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(min_textField, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(max_textField, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(category_comboBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(shopee_jRadioButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(shop_jRadioButton))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
-                        .addComponent(delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(179, 179, 179)
-                .addComponent(total_label)
-                .addGap(18, 18, 18)
-                .addComponent(total_label1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(fourth_label)
-                    .addComponent(first_label)
-                    .addComponent(second_label)
-                    .addComponent(third_label)
-                    .addComponent(product_name_textField)
-                    .addComponent(price_textField)
-                    .addComponent(quantity_textField)
-                    .addComponent(category_comboBox, 0, 350, Short.MAX_VALUE)
-                    .addComponent(first_label1)
-                    .addComponent(shop_name_textField))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addContainerGap(87, Short.MAX_VALUE))
+                        .addGap(86, 86, 86)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(39, 39, 39)
+                                .addComponent(delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1))
+                        .addContainerGap(12, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(124, 124, 124)
+                        .addComponent(total_label)
+                        .addGap(18, 18, 18)
+                        .addComponent(total_label1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(first_label1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(shop_name_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addContainerGap()
                         .addComponent(first_label)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(product_name_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(discount_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(second_label)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(price_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(min_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(third_label)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(quantity_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(max_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(fourth_label)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(category_comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(shopee_jRadioButton)
+                            .addComponent(shop_jRadioButton))
+                        .addGap(28, 28, 28)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -344,7 +372,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(total_label)
                             .addComponent(total_label1))))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -363,58 +391,47 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        CouponFrame couponPage = new CouponFrame();
-        DefaultTableModel CouPage_product = (DefaultTableModel)couponPage.product_table.getModel();
-        DefaultTableModel MainModel_product = (DefaultTableModel)product_table.getModel();
+        MainFrame mainPage = new MainFrame();
         
-        DefaultTableModel CouPage_Cou = (DefaultTableModel)couponPage.coupon_table.getModel();
-        DefaultTableModel MainModel_Cou = (DefaultTableModel)coupon_table.getModel();
+        DefaultTableModel CouPage_product = (DefaultTableModel)product_table.getModel();
+        DefaultTableModel MainModel_product = (DefaultTableModel)mainPage.product_table.getModel();
         
-        sentToNewClassTable(MainModel_product,CouPage_product);
-        sentToNewClassTable(MainModel_Cou,CouPage_Cou);
+        DefaultTableModel CouPage_Cou = (DefaultTableModel)coupon_table.getModel();
+        DefaultTableModel MainModel_Cou = (DefaultTableModel)mainPage.coupon_table.getModel();
+        
+        MainFrame.sentToNewClassTable(CouPage_product,MainModel_product);
+        MainFrame.sentToNewClassTable(CouPage_Cou,MainModel_Cou);
         
         String total = total_label1.getText();
-        couponPage.total_label1.setText(total);
+        mainPage.total_label1.setText(total);
         
-        couponPage.show();
+        mainPage.show();
         dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
-    public static void sentToNewClassTable(DefaultTableModel curModel,DefaultTableModel newModel){
-        int col = curModel.getColumnCount();
-        int row = curModel.getRowCount();
         
-        if(row > 0){
-            for(int i =0;i<row;i++){
-                Object[] data = new Object[col];
-                for(int j = 0;j<col;j++){
-                    data[j] = curModel.getValueAt(i, j);
-                }
-                newModel.addRow(data);
-            }
-        }
-    }
+            
+            
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         
-        if(!isEmpty()){
-            String shopName = shop_name_textField.getText();
-            String productName = product_name_textField.getText();
-            String category = category_comboBox.getSelectedItem().toString();
-            double price = Double.parseDouble(price_textField.getText());
-            int quantity = Integer.parseInt(quantity_textField.getText());
-            String total = String.format("%.2f",(price * (double)quantity));
-
-            String data[] = {shopName,productName,category,price_textField.getText(),quantity_textField.getText(),total};
-            DefaultTableModel tblItemsModel = (DefaultTableModel)product_table.getModel();
-            tblItemsModel.addRow(data);
-
-            double totalPrice = Double.parseDouble(total_label1.getText());
-            totalPrice += Double.parseDouble(total);
-            total_label1.setText(String.format("%.2f",totalPrice));
-
-            clearText();
-        }
         
+            
+        String category = category_comboBox.getSelectedItem().toString();
+        String type = "";
+        if (shopee_jRadioButton.isSelected()){
+            type = "Shopee";
+        }
+        else if (shop_jRadioButton.isSelected()){
+            type = "Shop";
+        }
+        String data[] = {discount_textField.getText(),type,category,min_textField.getText(),max_textField.getText()};
+        DefaultTableModel tblCousModel = (DefaultTableModel)coupon_table.getModel();
+        tblCousModel.addRow(data);
+
+        clearText();
+            
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -461,43 +478,51 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void product_name_textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_product_name_textFieldActionPerformed
+    private void discount_textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discount_textFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_product_name_textFieldActionPerformed
+    }//GEN-LAST:event_discount_textFieldActionPerformed
 
-    private void price_textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_price_textFieldActionPerformed
+    private void min_textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_min_textFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_price_textFieldActionPerformed
+    }//GEN-LAST:event_min_textFieldActionPerformed
 
-    private void quantity_textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quantity_textFieldActionPerformed
+    private void max_textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_max_textFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_quantity_textFieldActionPerformed
+    }//GEN-LAST:event_max_textFieldActionPerformed
 
     private void category_comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_category_comboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_category_comboBoxActionPerformed
 
-    private void quantity_textFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_quantity_textFieldKeyTyped
+    private void max_textFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_max_textFieldKeyTyped
         // TODO add your handling code here:
         char c = evt.getKeyChar();
         if(Character.isDigit(c) || c == '.'){
-            quantity_textField.setEditable(true);
+            max_textField.setEditable(true);
         }
         else{
-            quantity_textField.setEditable(false);
+            max_textField.setEditable(false);
         }
-    }//GEN-LAST:event_quantity_textFieldKeyTyped
+    }//GEN-LAST:event_max_textFieldKeyTyped
 
-    private void price_textFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_price_textFieldKeyTyped
+    private void min_textFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_min_textFieldKeyTyped
         // TODO add your handling code here:
         char c = evt.getKeyChar();
         if(Character.isDigit(c) || c == '.'){
-            price_textField.setEditable(true);
+            min_textField.setEditable(true);
         }
         else{
-            price_textField.setEditable(false);
+            min_textField.setEditable(false);
         }
-    }//GEN-LAST:event_price_textFieldKeyTyped
+    }//GEN-LAST:event_min_textFieldKeyTyped
+
+    private void shopee_jRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shopee_jRadioButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_shopee_jRadioButtonActionPerformed
+
+    private void shop_jRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shop_jRadioButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_shop_jRadioButtonActionPerformed
 
     private void product_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_product_tableMouseClicked
         // TODO add your handling code here:
@@ -523,10 +548,6 @@ public class MainFrame extends javax.swing.JFrame {
             product_table.clearSelection();
     }//GEN-LAST:event_coupon_tableMouseClicked
 
-    private void shop_name_textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shop_name_textFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_shop_name_textFieldActionPerformed
-
     
     /**
      * @param args the command line arguments
@@ -545,20 +566,23 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CouponFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CouponFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CouponFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CouponFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainFrame().setVisible(true);
+                new CouponFrame().setVisible(true);
             }
         });
     }
@@ -567,8 +591,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> category_comboBox;
     public javax.swing.JTable coupon_table;
     private javax.swing.JButton delete_btn;
+    private javax.swing.JTextField discount_textField;
     private javax.swing.JLabel first_label;
-    private javax.swing.JLabel first_label1;
     private javax.swing.JLabel fourth_label;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -576,13 +600,13 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField price_textField;
-    private javax.swing.JTextField product_name_textField;
+    private javax.swing.JTextField max_textField;
+    private javax.swing.JTextField min_textField;
     public javax.swing.JTable product_table;
-    private javax.swing.JTextField quantity_textField;
     private javax.swing.JLabel second_label;
     private javax.swing.ButtonGroup shopType;
-    private javax.swing.JTextField shop_name_textField;
+    private javax.swing.JRadioButton shop_jRadioButton;
+    private javax.swing.JRadioButton shopee_jRadioButton;
     private javax.swing.JLabel third_label;
     private javax.swing.JLabel total_label;
     public javax.swing.JLabel total_label1;
