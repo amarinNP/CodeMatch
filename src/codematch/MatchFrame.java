@@ -242,22 +242,19 @@ public class MatchFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    public static void sentToNewClassTable(DefaultTableModel curModel,DefaultTableModel newModel){
-        int col = curModel.getColumnCount();
-        int row = curModel.getRowCount();
-        
-        if(row > 0){
-            for(int i =0;i<row;i++){
-                Object[] data = new Object[col];
-                for(int j = 0;j<col;j++){
-                    data[j] = curModel.getValueAt(i, j);
-                }
-                newModel.addRow(data);
-            }
-        }
-    }
+
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel tbl = (DefaultTableModel)product_table.getModel();
+        
+        if(product_table.getSelectedRowCount() == 1){
+            
+            String shipping_price = shipping_price_textField.getText();
+            String category = category_comboBox.getSelectedItem().toString();
+            
+            tbl.setValueAt(shipping_price, product_table.getSelectedRow(), 1);
+            tbl.setValueAt(category, product_table.getSelectedRow(), 2);
+        }
         
     }//GEN-LAST:event_addButtonActionPerformed
 
@@ -281,7 +278,21 @@ public class MatchFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_shipping_price_textFieldKeyTyped
 
     private void product_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_product_tableMouseClicked
-        // TODO add your handling code here:     
+        // TODO add your handling code here:
+        DefaultTableModel tbl = (DefaultTableModel)product_table.getModel();
+        
+        String name = tbl.getValueAt(product_table.getSelectedRow(), 0).toString();
+        String shipping_price = tbl.getValueAt(product_table.getSelectedRow(), 1).toString();
+        String category = tbl.getValueAt(product_table.getSelectedRow(), 2).toString();
+        
+        shop_name_textField.setText(name);
+        shipping_price_textField.setText(shipping_price);
+        switch(category){
+            case("Mall")-> category_comboBox.setSelectedIndex(0);
+            case("Khum")-> category_comboBox.setSelectedIndex(1);
+            case("Normal")-> category_comboBox.setSelectedIndex(2);
+        }
+        
     }//GEN-LAST:event_product_tableMouseClicked
 
     private void product_tableMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_product_tableMouseExited
