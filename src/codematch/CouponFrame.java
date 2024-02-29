@@ -4,6 +4,7 @@
  */
 package codematch;
 
+import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -152,11 +153,11 @@ public class CouponFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Shop name", "Product Name", "Category", "Price", "Quantity", "Total"
+                "Shop name", "Product Name", "Price", "Quantity", "Total"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -182,7 +183,6 @@ public class CouponFrame extends javax.swing.JFrame {
             product_table.getColumnModel().getColumn(2).setResizable(false);
             product_table.getColumnModel().getColumn(3).setResizable(false);
             product_table.getColumnModel().getColumn(4).setResizable(false);
-            product_table.getColumnModel().getColumn(5).setResizable(false);
         }
 
         discount_textField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -330,11 +330,11 @@ public class CouponFrame extends javax.swing.JFrame {
                                 .addComponent(delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                        .addGap(26, 26, 26)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
                             .addComponent(jScrollPane1))
-                        .addContainerGap(12, Short.MAX_VALUE))
+                        .addContainerGap(15, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(124, 124, 124)
                         .addComponent(total_label)
@@ -385,7 +385,7 @@ public class CouponFrame extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(total_label)
                             .addComponent(total_label1))))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -492,6 +492,33 @@ public class CouponFrame extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        MatchFrame matchPage = new MatchFrame();
+        DefaultTableModel matchPage_product = (DefaultTableModel)matchPage.product_table.getModel();
+        DefaultTableModel couModel_product = (DefaultTableModel)product_table.getModel();
+        
+        DefaultTableModel matchPage_Cou = (DefaultTableModel)matchPage.coupon_table.getModel();
+        DefaultTableModel couModel_Cou = (DefaultTableModel)coupon_table.getModel();
+        
+        
+        int row = couModel_product.getRowCount();
+        ArrayList<String> shopsName = MainFrame.findShopName(couModel_product);
+        
+        if(row > 0){
+            for(int i = 0;i<shopsName.size();i++){
+                double total = 0;
+                for(int j = 0;j<row;j++){
+                    String name = couModel_product.getValueAt(j, 0).toString();
+                    if(shopsName.get(i).equals(name)){
+                        total += Double.parseDouble((String) couModel_product.getValueAt(j, 4));
+                    }
+                }
+                String[] data = {shopsName.get(i),"0","",String.format( "%.2f", total )};
+                matchPage_product.addRow(data);
+            }
+        }
+        MainFrame.sentToNewClassTable(couModel_Cou,matchPage_Cou);
+
+        matchPage.show();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void discount_textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discount_textFieldActionPerformed
