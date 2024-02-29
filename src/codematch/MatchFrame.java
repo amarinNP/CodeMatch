@@ -4,7 +4,6 @@
  */
 package codematch;
 
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -15,8 +14,15 @@ public class MatchFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
-    public MatchFrame() {
+    private static MatchFrame obj=null;
+    MatchFrame() {
         initComponents();
+    }
+    public static MatchFrame getObj(){
+        if(obj==null){
+            obj=new MatchFrame();
+            
+        }return obj;
     }
 
     /**
@@ -37,7 +43,7 @@ public class MatchFrame extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         product_table = new javax.swing.JTable();
         shipping_price_textField = new javax.swing.JTextField();
-        addButton = new javax.swing.JButton();
+        updateButton = new javax.swing.JButton();
         matchButton = new javax.swing.JButton();
         first_label1 = new javax.swing.JLabel();
         shop_name_textField = new javax.swing.JTextField();
@@ -142,11 +148,11 @@ public class MatchFrame extends javax.swing.JFrame {
             }
         });
 
-        addButton.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        addButton.setText("ADD");
-        addButton.addActionListener(new java.awt.event.ActionListener() {
+        updateButton.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        updateButton.setText("UPDATE");
+        updateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addButtonActionPerformed(evt);
+                updateButtonActionPerformed(evt);
             }
         });
 
@@ -195,7 +201,7 @@ public class MatchFrame extends javax.swing.JFrame {
                 .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(matchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -223,7 +229,7 @@ public class MatchFrame extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(matchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15))
@@ -243,7 +249,7 @@ public class MatchFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         // TODO add your handling code here:
         DefaultTableModel tbl = (DefaultTableModel)product_table.getModel();
         
@@ -256,7 +262,7 @@ public class MatchFrame extends javax.swing.JFrame {
             tbl.setValueAt(category, product_table.getSelectedRow(), 2);
         }
         
-    }//GEN-LAST:event_addButtonActionPerformed
+    }//GEN-LAST:event_updateButtonActionPerformed
 
     private void matchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matchButtonActionPerformed
         // TODO add your handling code here:
@@ -361,7 +367,6 @@ public class MatchFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addButton;
     private javax.swing.JComboBox<String> category_comboBox;
     public javax.swing.JTable coupon_table;
     private javax.swing.JButton exitButton;
@@ -375,5 +380,6 @@ public class MatchFrame extends javax.swing.JFrame {
     public javax.swing.JTable product_table;
     private javax.swing.JTextField shipping_price_textField;
     private javax.swing.JTextField shop_name_textField;
+    private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -432,6 +432,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        
         MatchFrame matchPage = new MatchFrame();
         DefaultTableModel matchPage_product = (DefaultTableModel)matchPage.product_table.getModel();
         DefaultTableModel MainModel_product = (DefaultTableModel)product_table.getModel();
@@ -459,7 +460,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         sentToNewClassTable(MainModel_Cou,matchPage_Cou);
 
-        matchPage.show();
+        MatchFrame.getObj().setVisible(true);
 
     }//GEN-LAST:event_jButton4ActionPerformed
 

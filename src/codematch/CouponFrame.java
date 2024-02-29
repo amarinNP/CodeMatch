@@ -518,7 +518,7 @@ public class CouponFrame extends javax.swing.JFrame {
         }
         MainFrame.sentToNewClassTable(couModel_Cou,matchPage_Cou);
 
-        matchPage.show();
+        MatchFrame.getObj().setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void discount_textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discount_textFieldActionPerformed
