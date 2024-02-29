@@ -59,10 +59,10 @@
                               <Component id="second_label" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="third_label" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="max_textField" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="category_comboBox" alignment="0" pref="350" max="32767" attributes="0"/>
                                   <Component id="discount_textField" alignment="0" max="32767" attributes="0"/>
                                   <Component id="min_textField" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="max_textField" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="category_comboBox" alignment="0" min="-2" pref="350" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
                                   <EmptySpace min="6" pref="6" max="-2" attributes="0"/>

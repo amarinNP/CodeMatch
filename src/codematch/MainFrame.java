@@ -4,6 +4,8 @@
  */
 package codematch;
 
+import java.awt.Component;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,7 +32,7 @@ public class MainFrame extends javax.swing.JFrame {
         product_name_textField.setText("");
         price_textField.setText("");
         quantity_textField.setText("");
-        category_comboBox.setSelectedIndex(-1);
+//        category_comboBox.setSelectedIndex(-1);
     }
     
     private boolean isEmpty(){
@@ -285,10 +287,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(fourth_label)
                             .addComponent(first_label)
-                            .addComponent(product_name_textField)
-                            .addComponent(category_comboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(first_label1)
-                            .addComponent(shop_name_textField)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(price_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -298,7 +297,11 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addComponent(second_label)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(third_label)
-                                .addGap(55, 55, 55)))))
+                                .addGap(55, 55, 55))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(shop_name_textField, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(product_name_textField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE))
+                            .addComponent(category_comboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(179, 179, 179)
@@ -418,10 +421,6 @@ public class MainFrame extends javax.swing.JFrame {
             DefaultTableModel tblItemsModel = (DefaultTableModel)product_table.getModel();
             tblItemsModel.addRow(data);
 
-            double totalPrice = Double.parseDouble(total_label1.getText());
-            totalPrice += Double.parseDouble(total);
-            total_label1.setText(String.format("%.2f",totalPrice));
-
             clearText();
         }
         
@@ -444,14 +443,11 @@ public class MainFrame extends javax.swing.JFrame {
                 int cnt_items = product_table.getSelectedRow();
                 while (cnt_items != -1){
                     int modelCnt = product_table.convertRowIndexToModel(cnt_items);
-                    String total = tblModel.getValueAt(cnt_items,4).toString();
+                    String total = tblModel.getValueAt(cnt_items,3).toString();
                     System.out.println(total);
                     tblModel.removeRow(modelCnt);
                     cnt_items = product_table.getSelectedRow();
                     
-                    double totalPrice = Double.parseDouble(total_label1.getText());                   
-                    totalPrice -= Double.parseDouble(total);
-                    total_label1.setText(String.format("%.2f",totalPrice));
                 }
             }
             if (coupon_table.getSelectedRow() != 1 || coupon_table.getSelectedRow() > 0){
@@ -469,8 +465,88 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        MatchFrame matchPage = new MatchFrame();
+        DefaultTableModel matchPage_product = (DefaultTableModel)matchPage.product_table.getModel();
+        DefaultTableModel MainModel_product = (DefaultTableModel)product_table.getModel();
+        
+        DefaultTableModel matchPage_Cou = (DefaultTableModel)matchPage.coupon_table.getModel();
+        DefaultTableModel MainModel_Cou = (DefaultTableModel)coupon_table.getModel();
+        
+        
+        int row = MainModel_product.getRowCount();
+        ArrayList<String> shopsName = findShopName(MainModel_product);
+        String[] shopsCategory = findShopCategory(MainModel_product,shopsName);
+        if(row > 0){
+            for(int i = 0;i<shopsName.size();i++){
+                double total = 0;
+                for(int j = 0;j<row;j++){
+                    String name = MainModel_product.getValueAt(j, 0).toString();
+                    if(shopsName.get(i).equals(name)){
+                        total += Double.parseDouble((String) MainModel_product.getValueAt(j, 5));
+                    }
+                }
+                String[] data = {shopsName.get(i),"0",shopsCategory[i],String.format( "%.2f", total )};
+                matchPage_product.addRow(data);
+            }
+        }
+        
+        sentToNewClassTable(MainModel_Cou,matchPage_Cou);
+
+        matchPage.show();
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private ArrayList<String> findShopName(DefaultTableModel table){
+        ArrayList<String> shopsName = new ArrayList<String>();
+        int row = table.getRowCount();
+        if(row > 0){
+            for(int i =0;i<row;i++){
+                String name = table.getValueAt(i, 0).toString();
+                if(!shopsName.contains(name))
+                    shopsName.add(name);
+            }
+        }
+        return shopsName;
+    }
+    private String[] findShopCategory(DefaultTableModel table, ArrayList<String> shopsName){
+        int row = table.getRowCount();
+        String[] categorys = new String[shopsName.size()];
+        if(row > 0){
+            for(int i = 0;i<shopsName.size();i++){
+                int[] category_cnt = {0,0,0};
+                
+                for(int j = 0;j<row;j++){
+                    String name = table.getValueAt(j, 0).toString();
+                    String cate = table.getValueAt(j, 2).toString();
+                    if(shopsName.get(i).equals(name)){
+                        switch (cate) {
+                            case "Mall" -> category_cnt[0]++;
+                            case "Khum" -> category_cnt[1]++;
+                            case "Normal" -> category_cnt[2]++;
+                            default -> {
+                            }
+                        }
+                    } 
+                } // end for j
+                
+                String category = "";
+                if(category_cnt[0] > category_cnt[2] || category_cnt[1] > category_cnt[2]){
+                    if(category_cnt[0] > category_cnt[1]){
+                        category = "Mall";
+                    }
+                    else if(category_cnt[1] > category_cnt[0]) {
+                        category = "Khum";
+                    }
+                }
+                else{
+                    category = "Normal";
+                }
+                categorys[i] = category;
+            }// end for i
+           
+        }
+         return categorys;
+    }
     private void product_name_textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_product_name_textFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_product_name_textFieldActionPerformed

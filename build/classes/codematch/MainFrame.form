@@ -67,10 +67,7 @@
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="fourth_label" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="first_label" min="-2" max="-2" attributes="0"/>
-                              <Component id="product_name_textField" alignment="0" max="32767" attributes="0"/>
-                              <Component id="category_comboBox" alignment="0" max="32767" attributes="0"/>
                               <Component id="first_label1" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="shop_name_textField" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="price_textField" min="-2" pref="175" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
@@ -83,6 +80,9 @@
                                   <Component id="third_label" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="shop_name_textField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="product_name_textField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="category_comboBox" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
