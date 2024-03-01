@@ -36,7 +36,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     private boolean isEmpty(){
         if(shop_name_textField.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Shop Name is required!", "Warning", 2);
+            JOptionPane.showMessageDialog(this, "Shop Name is required!", "Warning",2);
             return true;
         }
         if(product_name_textField.getText().isEmpty()){
@@ -80,8 +80,6 @@ public class MainFrame extends javax.swing.JFrame {
         delete_btn = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         second_label = new javax.swing.JLabel();
-        total_label = new javax.swing.JLabel();
-        total_label1 = new javax.swing.JLabel();
         first_label1 = new javax.swing.JLabel();
         shop_name_textField = new javax.swing.JTextField();
 
@@ -231,12 +229,6 @@ public class MainFrame extends javax.swing.JFrame {
         second_label.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         second_label.setText("Price");
 
-        total_label.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        total_label.setText("Total :");
-
-        total_label1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        total_label1.setText("0");
-
         first_label1.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         first_label1.setText("Shop name");
 
@@ -275,19 +267,11 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(quantity_textField)
                             .addComponent(product_name_textField)
                             .addComponent(price_textField))))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(179, 179, 179)
-                        .addComponent(total_label)
-                        .addGap(18, 18, 18)
-                        .addComponent(total_label1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -322,11 +306,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(total_label)
-                    .addComponent(total_label1))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -355,8 +335,6 @@ public class MainFrame extends javax.swing.JFrame {
         sentToNewClassTable(MainModel_product,CouPage_product);
         sentToNewClassTable(MainModel_Cou,CouPage_Cou);
         
-        String total = total_label1.getText();
-        couponPage.total_label1.setText(total);
         
         couponPage.show();
         dispose();
@@ -459,8 +437,10 @@ public class MainFrame extends javax.swing.JFrame {
         }
         
         sentToNewClassTable(MainModel_Cou,matchPage_Cou);
-
-        MatchFrame.getObj().setVisible(true);
+        if(matchPage.getObj()){
+            matchPage.setVisible(true);
+        }
+        
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -493,10 +473,10 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         char c = evt.getKeyChar();
         if(Character.isDigit(c) || c == '.'){
-            quantity_textField.setEditable(true);
+            
         }
         else{
-            quantity_textField.setEditable(false);
+            evt.consume();
         }
     }//GEN-LAST:event_quantity_textFieldKeyTyped
 
@@ -504,10 +484,10 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         char c = evt.getKeyChar();
         if(Character.isDigit(c) || c == '.'){
-            price_textField.setEditable(true);
+            
         }
         else{
-            price_textField.setEditable(false);
+            evt.consume();
         }
     }//GEN-LAST:event_price_textFieldKeyTyped
 
@@ -593,7 +573,5 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel second_label;
     private javax.swing.JTextField shop_name_textField;
     private javax.swing.JLabel third_label;
-    private javax.swing.JLabel total_label;
-    public javax.swing.JLabel total_label1;
     // End of variables declaration//GEN-END:variables
 }

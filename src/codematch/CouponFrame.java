@@ -41,38 +41,32 @@ public class CouponFrame extends javax.swing.JFrame {
     }
     
     private boolean isEmpty(){
-        
+            if(category_comboBox.getSelectedIndex() == -1){
+                JOptionPane.showMessageDialog(this, "Please, select the category", "Warning", 2);
+                return true;
+            }
+            
             if((discount_textField.getText().equals("")) ){
                 JOptionPane.showMessageDialog(this, "Discount is required!", "Warning", 2);
                 return true;
             }
             if(Integer.parseInt(discount_textField.getText()) <= 0){
-                JOptionPane.showMessageDialog(this, "Plase, increase the product quantity", "Warning", 2);
+                JOptionPane.showMessageDialog(this, "Please, increase the product quantity", "Warning", 2);
                 return true;
             }
             if((min_textField.getText().equals("")) ){
                 JOptionPane.showMessageDialog(this, "Min is required!", "Warning", 2);
                 return true;
             }
-            if((Integer.parseInt(min_textField.getText()) < 0) || (Integer.parseInt(min_textField.getText()) > Integer.parseInt(max_textField.getText()))){
-                
-                JOptionPane.showMessageDialog(this, "Min is incorrect!", "Warning", 2);
-                return true;
-            }
+            
             if((max_textField.getText().equals("")) ){
                 JOptionPane.showMessageDialog(this, "Max is required!", "Warning", 2);
                 return true;
             }
-            if((Integer.parseInt(max_textField.getText()) < 0) || (Integer.parseInt(max_textField.getText()) < Integer.parseInt(min_textField.getText()))){
-                JOptionPane.showMessageDialog(this, "Max is incorrect!", "Warning", 2);
-                return true;
-            }
-            if(category_comboBox.getSelectedIndex() == -1){
-                JOptionPane.showMessageDialog(this, "Plase, select the category", "Warning", 2);
-                return true;
-            }
-            if(!shopee_jRadioButton.isSelected() && !shop_jRadioButton.isSelected()){
-                JOptionPane.showMessageDialog(this, "Plase, select the type", "Warning", 2);
+            
+            
+            if(!normal_jRadioButton.isSelected() && !mall_jRadioButton.isSelected() && !k_shipping_jRadioButton.isSelected()){
+                JOptionPane.showMessageDialog(this, "Please, select the type", "Warning", 2);
                 return true;
             }
         
@@ -99,11 +93,10 @@ public class CouponFrame extends javax.swing.JFrame {
         second_label = new javax.swing.JLabel();
         fourth_label = new javax.swing.JLabel();
         category_comboBox = new javax.swing.JComboBox<>();
-        shopee_jRadioButton = new javax.swing.JRadioButton();
-        shop_jRadioButton = new javax.swing.JRadioButton();
-        total_label = new javax.swing.JLabel();
-        total_label1 = new javax.swing.JLabel();
-        shopeeMall_jRadioButton = new javax.swing.JRadioButton();
+        normal_jRadioButton = new javax.swing.JRadioButton();
+        mall_jRadioButton = new javax.swing.JRadioButton();
+        k_shipping_jRadioButton = new javax.swing.JRadioButton();
+        k_discount_jRadioButton = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CodeMatch");
@@ -262,33 +255,35 @@ public class CouponFrame extends javax.swing.JFrame {
             }
         });
 
-        shopType.add(shopee_jRadioButton);
-        shopee_jRadioButton.setText("Shopee");
-        shopee_jRadioButton.addActionListener(new java.awt.event.ActionListener() {
+        shopType.add(normal_jRadioButton);
+        normal_jRadioButton.setText("Normal");
+        normal_jRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                shopee_jRadioButtonActionPerformed(evt);
+                normal_jRadioButtonActionPerformed(evt);
             }
         });
 
-        shopType.add(shop_jRadioButton);
-        shop_jRadioButton.setText("Shop");
-        shop_jRadioButton.addActionListener(new java.awt.event.ActionListener() {
+        shopType.add(mall_jRadioButton);
+        mall_jRadioButton.setText("Mall");
+        mall_jRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                shop_jRadioButtonActionPerformed(evt);
+                mall_jRadioButtonActionPerformed(evt);
             }
         });
 
-        total_label.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        total_label.setText("Total :");
-
-        total_label1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        total_label1.setText("0");
-
-        shopType.add(shopeeMall_jRadioButton);
-        shopeeMall_jRadioButton.setText("Shopee (Mall)");
-        shopeeMall_jRadioButton.addActionListener(new java.awt.event.ActionListener() {
+        shopType.add(k_shipping_jRadioButton);
+        k_shipping_jRadioButton.setText("K_Shipping");
+        k_shipping_jRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                shopeeMall_jRadioButtonActionPerformed(evt);
+                k_shipping_jRadioButtonActionPerformed(evt);
+            }
+        });
+
+        shopType.add(k_discount_jRadioButton);
+        k_discount_jRadioButton.setText("K_Discount");
+        k_discount_jRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                k_discount_jRadioButtonActionPerformed(evt);
             }
         });
 
@@ -300,23 +295,24 @@ public class CouponFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(fourth_label)
                             .addComponent(first_label)
                             .addComponent(second_label)
                             .addComponent(third_label)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(max_textField, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(category_comboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, 350, Short.MAX_VALUE)
-                                .addComponent(discount_textField, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(min_textField, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(max_textField)
+                            .addComponent(category_comboBox, 0, 381, Short.MAX_VALUE)
+                            .addComponent(discount_textField)
+                            .addComponent(min_textField)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(shopee_jRadioButton)
+                                .addComponent(normal_jRadioButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(shopeeMall_jRadioButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(shop_jRadioButton))))
+                                .addComponent(mall_jRadioButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(k_shipping_jRadioButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(k_discount_jRadioButton))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(86, 86, 86)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -328,19 +324,11 @@ public class CouponFrame extends javax.swing.JFrame {
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(39, 39, 39)
                                 .addComponent(delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1))
-                        .addContainerGap(15, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(124, 124, 124)
-                        .addComponent(total_label)
-                        .addGap(18, 18, 18)
-                        .addComponent(total_label1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -365,9 +353,10 @@ public class CouponFrame extends javax.swing.JFrame {
                         .addComponent(category_comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(shopee_jRadioButton)
-                            .addComponent(shop_jRadioButton)
-                            .addComponent(shopeeMall_jRadioButton))
+                            .addComponent(normal_jRadioButton)
+                            .addComponent(mall_jRadioButton)
+                            .addComponent(k_shipping_jRadioButton)
+                            .addComponent(k_discount_jRadioButton))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -380,12 +369,8 @@ public class CouponFrame extends javax.swing.JFrame {
                         .addGap(24, 24, 24)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(total_label)
-                            .addComponent(total_label1))))
-                .addContainerGap(11, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -415,8 +400,6 @@ public class CouponFrame extends javax.swing.JFrame {
         MainFrame.sentToNewClassTable(CouPage_product,MainModel_product);
         MainFrame.sentToNewClassTable(CouPage_Cou,MainModel_Cou);
         
-        String total = total_label1.getText();
-        mainPage.total_label1.setText(total);
         
         mainPage.show();
         dispose();
@@ -428,26 +411,62 @@ public class CouponFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        boolean pass = false;
+        switch (category_comboBox.getSelectedIndex()) {
+            case 0 -> {
+                discount_textField.setText("37");
+                min_textField.setEnabled(true);
+                max_textField.setText("37");
+            }
+            case 1 -> {    
+                discount_textField.setEnabled(true);
+                min_textField.setEnabled(true);
+                max_textField.setText(discount_textField.getText());
+                if((Integer.parseInt(min_textField.getText()) < 0) || (Integer.parseInt(min_textField.getText()) > Integer.parseInt(max_textField.getText()))){
+                    JOptionPane.showMessageDialog(this, "Min is incorrect!", "Warning", 2);
+                    pass = true;
+                }
+            }
+            case 2 -> {
+                discount_textField.setEnabled(true);
+                min_textField.setEnabled(true);
+                max_textField.setEnabled(true);
+                if((Integer.parseInt(max_textField.getText()) < 0) || (Integer.parseInt(max_textField.getText()) < Integer.parseInt(min_textField.getText()))){
+                    JOptionPane.showMessageDialog(this, "Max is incorrect!", "Warning", 2);
+                    pass = true;
+                }
+                else if((Integer.parseInt(min_textField.getText()) < 0) || (Integer.parseInt(min_textField.getText()) > Integer.parseInt(max_textField.getText()))){
+                    JOptionPane.showMessageDialog(this, "Min is incorrect!", "Warning", 2);
+                    pass = true;
+                }
+            }
+            default -> {
+            }
+        }
         
-        
+        if(!isEmpty() && !pass){
             
-        String category = category_comboBox.getSelectedItem().toString();
-        String type = "";
-        if (shopee_jRadioButton.isSelected()){
-            type = "Shopee";
-        }
-        else if (shop_jRadioButton.isSelected()){
-            type = "Shop";
-        }
-        else if (shopeeMall_jRadioButton.isSelected()){
-            type = "Shopee Mall";
-        }
-        String data[] = {discount_textField.getText(),type,category,min_textField.getText(),max_textField.getText()};
-        DefaultTableModel tblCousModel = (DefaultTableModel)coupon_table.getModel();
-        tblCousModel.addRow(data);
-
-        clearText();
+            String category = category_comboBox.getSelectedItem().toString();
+            String type = "";
+            if (normal_jRadioButton.isSelected()){
+                type = "Normal";
+            }
+            else if (mall_jRadioButton.isSelected()){
+                type = "Mall";
+            }
+            else if (k_shipping_jRadioButton.isSelected()){
+                type = "Khum_shipping";
+            }
+            else if (k_discount_jRadioButton.isSelected()){
+                type = "Khum_discount";
+            }
             
+            DefaultTableModel tblCousModel = (DefaultTableModel)coupon_table.getModel();
+            String data[] = {discount_textField.getText(),type,category,min_textField.getText(),max_textField.getText()};
+            tblCousModel.addRow(data);
+            clearText();
+            
+        }
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -472,9 +491,6 @@ public class CouponFrame extends javax.swing.JFrame {
                     tblModel.removeRow(modelCnt);
                     cnt_items = product_table.getSelectedRow();
                     
-                    double totalPrice = Double.parseDouble(total_label1.getText());                   
-                    totalPrice -= Double.parseDouble(total);
-                    total_label1.setText(String.format("%.2f",totalPrice));
                 }
             }
             if (coupon_table.getSelectedRow() != 1 || coupon_table.getSelectedRow() > 0){
@@ -518,7 +534,9 @@ public class CouponFrame extends javax.swing.JFrame {
         }
         MainFrame.sentToNewClassTable(couModel_Cou,matchPage_Cou);
 
-        MatchFrame.getObj().setVisible(true);
+        if(matchPage.getObj()){
+            matchPage.setVisible(true);
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void discount_textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discount_textFieldActionPerformed
@@ -535,16 +553,35 @@ public class CouponFrame extends javax.swing.JFrame {
 
     private void category_comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_category_comboBoxActionPerformed
         // TODO add your handling code here:
+        switch (category_comboBox.getSelectedIndex()) {
+            case 0 -> {
+                discount_textField.setEnabled(false);
+                min_textField.setEnabled(true);
+                max_textField.setEnabled(false);
+            }
+            case 1 -> {
+                discount_textField.setEnabled(true);
+                min_textField.setEnabled(true);
+                max_textField.setEnabled(false);
+            }
+            case 2 -> {
+                discount_textField.setEnabled(true);
+                min_textField.setEnabled(true);
+                max_textField.setEnabled(true);
+            }
+            default -> {
+            }
+        }
     }//GEN-LAST:event_category_comboBoxActionPerformed
 
     private void max_textFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_max_textFieldKeyTyped
         // TODO add your handling code here:
         char c = evt.getKeyChar();
         if(Character.isDigit(c) || c == '.'){
-            max_textField.setEditable(true);
+            
         }
         else{
-            max_textField.setEditable(false);
+            evt.consume();
         }
     }//GEN-LAST:event_max_textFieldKeyTyped
 
@@ -552,20 +589,16 @@ public class CouponFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         char c = evt.getKeyChar();
         if(Character.isDigit(c) || c == '.'){
-            min_textField.setEditable(true);
+            
         }
         else{
-            min_textField.setEditable(false);
+            evt.consume();
         }
     }//GEN-LAST:event_min_textFieldKeyTyped
 
-    private void shopee_jRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shopee_jRadioButtonActionPerformed
+    private void normal_jRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_normal_jRadioButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_shopee_jRadioButtonActionPerformed
-
-    private void shop_jRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shop_jRadioButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_shop_jRadioButtonActionPerformed
+    }//GEN-LAST:event_normal_jRadioButtonActionPerformed
 
     private void product_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_product_tableMouseClicked
         // TODO add your handling code here:
@@ -591,9 +624,17 @@ public class CouponFrame extends javax.swing.JFrame {
             product_table.clearSelection();
     }//GEN-LAST:event_coupon_tableMouseClicked
 
-    private void shopeeMall_jRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shopeeMall_jRadioButtonActionPerformed
+    private void mall_jRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mall_jRadioButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_shopeeMall_jRadioButtonActionPerformed
+    }//GEN-LAST:event_mall_jRadioButtonActionPerformed
+
+    private void k_shipping_jRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_k_shipping_jRadioButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_k_shipping_jRadioButtonActionPerformed
+
+    private void k_discount_jRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_k_discount_jRadioButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_k_discount_jRadioButtonActionPerformed
 
     
     /**
@@ -647,16 +688,15 @@ public class CouponFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JRadioButton k_discount_jRadioButton;
+    private javax.swing.JRadioButton k_shipping_jRadioButton;
+    private javax.swing.JRadioButton mall_jRadioButton;
     private javax.swing.JTextField max_textField;
     private javax.swing.JTextField min_textField;
+    private javax.swing.JRadioButton normal_jRadioButton;
     public javax.swing.JTable product_table;
     private javax.swing.JLabel second_label;
     private javax.swing.ButtonGroup shopType;
-    private javax.swing.JRadioButton shop_jRadioButton;
-    private javax.swing.JRadioButton shopeeMall_jRadioButton;
-    private javax.swing.JRadioButton shopee_jRadioButton;
     private javax.swing.JLabel third_label;
-    private javax.swing.JLabel total_label;
-    public javax.swing.JLabel total_label1;
     // End of variables declaration//GEN-END:variables
 }

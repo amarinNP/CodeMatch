@@ -4,7 +4,12 @@
  */
 package codematch;
 
-import javax.swing.table.DefaultTableModel;
+
+import static codematch.algorithm.matchCoupon;
+import java.util.ArrayList;
+import java.util.Arrays;
+import javax.swing.table.DefaultTableModel;  
+
 
 /**
  *
@@ -18,11 +23,14 @@ public class MatchFrame extends javax.swing.JFrame {
     MatchFrame() {
         initComponents();
     }
-    public static MatchFrame getObj(){
+    public static boolean getObj(){
+        
         if(obj==null){
-            obj=new MatchFrame();
-            
-        }return obj;
+            obj = new MatchFrame();
+            return true;       
+        }
+        
+        return false;
     }
 
     /**
@@ -86,7 +94,7 @@ public class MatchFrame extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
-        category_comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mall", "Khum", "Normal" }));
+        category_comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mall", "Normal", "Khum_shipping", "Khum_discount" }));
         category_comboBox.setSelectedIndex(-1);
         category_comboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -263,9 +271,78 @@ public class MatchFrame extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_updateButtonActionPerformed
+    private String[][] add2DString(DefaultTableModel tbl, int row,int col){
+        String items[][] = new String[row][col];
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+            items[i][j] = tbl.getValueAt(i, j).toString();
+            }
+        }
+        return items;
+    }
 
     private void matchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matchButtonActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel tbl_pro = (DefaultTableModel)product_table.getModel();
+        DefaultTableModel tbl_cou = (DefaultTableModel)coupon_table.getModel();
+        
+        int row_pro = tbl_pro.getRowCount();
+        int col_pro = tbl_pro.getColumnCount();
+        int row_cou = tbl_cou.getRowCount();
+        int col_cou = tbl_cou.getColumnCount();
+
+        String[][] items = add2DString(tbl_pro,row_pro,col_pro);
+        Arrays.sort(items, (a, b) -> Double.compare(Double.parseDouble(b[3]), Double.parseDouble(a[3])));
+        Item[] shops = new Item[row_pro];
+        for(int i=0;i<items.length;i++){
+            String name = items[i][0];
+            double shipping = Double.parseDouble(items[i][1]);
+            String category = items[i][2];
+            double total = Double.parseDouble(items[i][3]);
+            
+            shops[i] = new Item(name,total,shipping,category);
+        }
+        
+        String[][] coupons_temp = add2DString(tbl_cou,row_cou,col_cou);
+        Coupon[] coupons = new Coupon[row_cou];
+        for(int i =0;i<coupons_temp.length;i++){
+            double discount = Double.parseDouble(coupons_temp[i][0]);
+            String type = coupons_temp[i][1];
+            String category = coupons_temp[i][2];
+            int min_dis = Integer.parseInt(coupons_temp[i][3]);
+            double max_dis = Double.parseDouble(coupons_temp[i][4]);
+            
+            if (null != category)switch (category) {
+                case "Free_Shipping" -> {
+                    coupons[i] = new Free_shipping();
+                    coupons[i].set_min_price(min_dis);
+                    coupons[i].set_category_coupon(category);
+                    coupons[i].set_type_coupon(type);
+                    
+                
+                }
+                case "Percentage" -> {
+                    coupons[i] = new Percentage_discount((int)discount);
+                    coupons[i].set_min_price(min_dis);
+                    coupons[i].set_max_discount(max_dis);
+                    coupons[i].set_type_coupon(category);
+                    coupons[i].set_type_coupon(type);
+                    
+                    
+                }
+                case "Absolute" -> {
+                    coupons[i] = new Absolute_discount(discount);
+                    coupons[i].set_min_price(min_dis);
+                    coupons[i].set_type_coupon(category);
+                    coupons[i].set_type_coupon(type);
+                }
+                default -> {
+                }
+            }
+        }
+        
+        ArrayList<Integer> cou_index = matchCoupon(shops,coupons);
+//        System.out.println(Arrays.toString(cou_index.toArray()));
     }//GEN-LAST:event_matchButtonActionPerformed
 
     private void shipping_price_textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shipping_price_textFieldActionPerformed
@@ -276,17 +353,17 @@ public class MatchFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         char c = evt.getKeyChar();
         if(Character.isDigit(c) || c == '.'){
-            shipping_price_textField.setEditable(true);
+            
         }
         else{
-            shipping_price_textField.setEditable(false);
+            evt.consume();
         }
     }//GEN-LAST:event_shipping_price_textFieldKeyTyped
 
     private void product_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_product_tableMouseClicked
         // TODO add your handling code here:
+        shop_name_textField.setEnabled(false);
         DefaultTableModel tbl = (DefaultTableModel)product_table.getModel();
-        
         String name = tbl.getValueAt(product_table.getSelectedRow(), 0).toString();
         String shipping_price = tbl.getValueAt(product_table.getSelectedRow(), 1).toString();
         String category = tbl.getValueAt(product_table.getSelectedRow(), 2).toString();
@@ -295,8 +372,9 @@ public class MatchFrame extends javax.swing.JFrame {
         shipping_price_textField.setText(shipping_price);
         switch(category){
             case("Mall")-> category_comboBox.setSelectedIndex(0);
-            case("Khum")-> category_comboBox.setSelectedIndex(1);
-            case("Normal")-> category_comboBox.setSelectedIndex(2);
+            case("Normal")-> category_comboBox.setSelectedIndex(1);
+            case("Khum_shipping")-> category_comboBox.setSelectedIndex(2);
+            case("Khum_discount")-> category_comboBox.setSelectedIndex(3);
         }
         
     }//GEN-LAST:event_product_tableMouseClicked
@@ -322,6 +400,7 @@ public class MatchFrame extends javax.swing.JFrame {
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         // TODO add your handling code here:
+        obj=null;
         this.dispose();
     }//GEN-LAST:event_exitButtonActionPerformed
 
@@ -383,3 +462,6 @@ public class MatchFrame extends javax.swing.JFrame {
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 }
+
+
+
