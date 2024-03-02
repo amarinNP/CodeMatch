@@ -422,7 +422,7 @@ public class CouponFrame extends javax.swing.JFrame {
                 discount_textField.setEnabled(true);
                 min_textField.setEnabled(true);
                 max_textField.setText(discount_textField.getText());
-                if((Integer.parseInt(min_textField.getText()) < 0) || (Integer.parseInt(min_textField.getText()) > Integer.parseInt(max_textField.getText()))){
+                if((Integer.parseInt(min_textField.getText()) < 0) || (Integer.parseInt(min_textField.getText()) < Integer.parseInt(discount_textField.getText()))){
                     JOptionPane.showMessageDialog(this, "Min is incorrect!", "Warning", 2);
                     pass = true;
                 }
@@ -533,8 +533,16 @@ public class CouponFrame extends javax.swing.JFrame {
             }
         }
         MainFrame.sentToNewClassTable(couModel_Cou,matchPage_Cou);
-
-        if(matchPage.getObj()){
+        if(product_table.getRowCount()==0 && coupon_table.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Table is empty", "Warning", 2);
+        }
+        else if(product_table.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Product table is empty", "Warning", 2);
+        }
+        else if(coupon_table.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Coupon table is empty", "Warning", 2);
+        }
+        else{
             matchPage.setVisible(true);
         }
     }//GEN-LAST:event_jButton4ActionPerformed

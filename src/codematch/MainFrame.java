@@ -437,9 +437,20 @@ public class MainFrame extends javax.swing.JFrame {
         }
         
         sentToNewClassTable(MainModel_Cou,matchPage_Cou);
-        if(matchPage.getObj()){
+        
+        if(product_table.getRowCount()==0 && coupon_table.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Table is empty", "Warning", 2);
+        }
+        else if(product_table.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Product table is empty", "Warning", 2);
+        }
+        else if(coupon_table.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Coupon table is empty", "Warning", 2);
+        }
+        else{
             matchPage.setVisible(true);
         }
+        
         
 
     }//GEN-LAST:event_jButton4ActionPerformed

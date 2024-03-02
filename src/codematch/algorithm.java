@@ -2,7 +2,8 @@
 package codematch;
 
 
-import java.util.ArrayList;
+
+import java.util.HashMap;
 
 public class algorithm {
     
@@ -26,11 +27,11 @@ public class algorithm {
     }    
 
     // กรณีสินค้าหลายชิ้น โค้ดหลายชิ้น
-    public static ArrayList<Integer> matchCoupon(Item[] items, Coupon[] coupon){
+    public static HashMap<String, Integer> matchCoupon(Item[] items, Coupon[] coupon){
         int i, j;
         double discount = 0, temp=0;
         int index=-1;
-        ArrayList<Integer> coupons_index = new ArrayList<Integer>();
+        HashMap<String, Integer> data = new HashMap<String, Integer>();
         for(i=0;i<items.length;i++){ // loop ตามจำนวนสินค้า
             for(j=0;j<coupon.length;j++){ // loop จำนวนโค้ด
                 if((items[i].getType().equals(coupon[j].getType()) || coupon[j].getType().equals("Normal")) && items[i].getPrice() >= coupon[j].getMin() && coupon[j].getLimit() < 3){
@@ -64,7 +65,8 @@ public class algorithm {
             }
             if(index != -1){
                 if(coupon[index].getLimit() < 3){ // เช็คว่าโค้ดถึงลิมิตยัง
-                    coupons_index.add(index);
+     
+                    data.put(items[i].getName(), index);
                     System.out.println(items[i].getName() + " Match coupon " + (index)); // พิมพ์ว่าสินค้า[i] เหมาะกับโค้ดตัวไหน
                     coupon[index].change_limit(); // เพิ่มจำนวนครั้งที่ใช้
                     if(!(coupon[index] instanceof Free_shipping)){
@@ -76,7 +78,7 @@ public class algorithm {
                 }
             }
         }
-        return coupons_index;
+        return data;
     }
 
     public static void main(String[] args) {

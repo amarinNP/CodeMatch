@@ -8,6 +8,8 @@ package codematch;
 import static codematch.algorithm.matchCoupon;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;  
 
 
@@ -19,19 +21,11 @@ public class MatchFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
-    private static MatchFrame obj=null;
+    
     MatchFrame() {
         initComponents();
     }
-    public static boolean getObj(){
-        
-        if(obj==null){
-            obj = new MatchFrame();
-            return true;       
-        }
-        
-        return false;
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,7 +49,6 @@ public class MatchFrame extends javax.swing.JFrame {
         matchButton = new javax.swing.JButton();
         first_label1 = new javax.swing.JLabel();
         shop_name_textField = new javax.swing.JTextField();
-        exitButton = new javax.swing.JButton();
 
         coupon_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -88,7 +81,7 @@ public class MatchFrame extends javax.swing.JFrame {
             coupon_table.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CodeMatch");
         setResizable(false);
 
@@ -183,14 +176,6 @@ public class MatchFrame extends javax.swing.JFrame {
             }
         });
 
-        exitButton.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        exitButton.setText("EXIT");
-        exitButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -210,11 +195,9 @@ public class MatchFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(50, 50, 50)
                         .addComponent(matchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(48, 48, 48))
+                        .addGap(83, 83, 83))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(40, 40, 40))))
@@ -238,8 +221,7 @@ public class MatchFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(matchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(matchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15))
         );
 
@@ -262,12 +244,20 @@ public class MatchFrame extends javax.swing.JFrame {
         DefaultTableModel tbl = (DefaultTableModel)product_table.getModel();
         
         if(product_table.getSelectedRowCount() == 1){
+            if(shipping_price_textField.getText().equals("")){
+                JOptionPane.showMessageDialog(this, "Shipping price is required!", "Warning", 2);
+            }
+            if(category_comboBox.getSelectedIndex() == -1){
+                JOptionPane.showMessageDialog(this, "Category is required!", "Warning", 2);
+            }
+            else{
+                double shipping_price = Double.parseDouble(shipping_price_textField.getText());
+                String category = category_comboBox.getSelectedItem().toString();
+                tbl.setValueAt(shipping_price, product_table.getSelectedRow(), 1);
+                tbl.setValueAt(category, product_table.getSelectedRow(), 2);
+            }
             
-            String shipping_price = shipping_price_textField.getText();
-            String category = category_comboBox.getSelectedItem().toString();
             
-            tbl.setValueAt(shipping_price, product_table.getSelectedRow(), 1);
-            tbl.setValueAt(category, product_table.getSelectedRow(), 2);
         }
         
     }//GEN-LAST:event_updateButtonActionPerformed
@@ -280,9 +270,33 @@ public class MatchFrame extends javax.swing.JFrame {
         }
         return items;
     }
-
+    private void sentToReport(HashMap<String, Integer> data){
+        ReportFrame report = new ReportFrame();
+        DefaultTableModel tbl_product = (DefaultTableModel)product_table.getModel();
+        DefaultTableModel tbl_cou = (DefaultTableModel)coupon_table.getModel();
+        
+        DefaultTableModel tbl_report = (DefaultTableModel)report.report_table.getModel();
+        int row_pro_cur = tbl_product.getRowCount();
+//        int col_new = tbl_report.getColumnCount();
+        int col_cou_cur = tbl_cou.getColumnCount();
+        for(String name:data.keySet()){
+            for(int i=0;i<row_pro_cur;i++){
+                if(name.equals(tbl_product.getValueAt(i, 0).toString())){
+                    ArrayList<String> temp = new ArrayList<String>();
+                    temp.add(name);
+                    for(int j=0;j<col_cou_cur;j++){
+                        temp.add(tbl_cou.getValueAt(data.get(name), j).toString());
+                    }
+                    tbl_report.addRow(temp.toArray());
+                }
+            }
+        }
+        report.show();
+        
+}
     private void matchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matchButtonActionPerformed
         // TODO add your handling code here:
+            
         DefaultTableModel tbl_pro = (DefaultTableModel)product_table.getModel();
         DefaultTableModel tbl_cou = (DefaultTableModel)coupon_table.getModel();
         
@@ -340,8 +354,12 @@ public class MatchFrame extends javax.swing.JFrame {
                 }
             }
         }
+        HashMap<String, Integer> data = matchCoupon(shops,coupons);
+        for (String i : data.keySet()) {
+                System.out.println("key: " + i + " value: " + data.get(i));
+            }
+        sentToReport(data);
         
-        ArrayList<Integer> cou_index = matchCoupon(shops,coupons);
 //        System.out.println(Arrays.toString(cou_index.toArray()));
     }//GEN-LAST:event_matchButtonActionPerformed
 
@@ -398,12 +416,6 @@ public class MatchFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_shop_name_textFieldActionPerformed
 
-    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
-        // TODO add your handling code here:
-        obj=null;
-        this.dispose();
-    }//GEN-LAST:event_exitButtonActionPerformed
-
     private void category_comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_category_comboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_category_comboBoxActionPerformed
@@ -448,7 +460,6 @@ public class MatchFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> category_comboBox;
     public javax.swing.JTable coupon_table;
-    private javax.swing.JButton exitButton;
     private javax.swing.JLabel first_label;
     private javax.swing.JLabel first_label1;
     private javax.swing.JLabel fourth_label;
