@@ -6,9 +6,11 @@ package codematch;
 
 
 import static codematch.algorithm.matchCoupon;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;  
 
@@ -24,8 +26,12 @@ public class MatchFrame extends javax.swing.JFrame {
     
     MatchFrame() {
         initComponents();
+        setLogoImage();
     }
-    
+    protected void setLogoImage(){
+        Image icon = new ImageIcon(this.getClass().getResource("/pic/CodeMatch_logo.png")).getImage();
+        this.setIconImage(icon);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

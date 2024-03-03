@@ -4,12 +4,11 @@
  */
 package codematch;
 
+import java.awt.Image;
 import java.util.ArrayList;
-import java.util.Vector;
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -21,9 +20,13 @@ public class CouponFrame extends javax.swing.JFrame {
      */
     public CouponFrame() {
         initComponents();
+        setLogoImage();
         
     }
-    
+    protected void setLogoImage(){
+        Image icon = new ImageIcon(this.getClass().getResource("/pic/CodeMatch_logo.png")).getImage();
+        this.setIconImage(icon);
+    }
 
 
     /**
@@ -65,7 +68,7 @@ public class CouponFrame extends javax.swing.JFrame {
             }
             
             
-            if(!normal_jRadioButton.isSelected() && !mall_jRadioButton.isSelected() && !k_shipping_jRadioButton.isSelected()){
+            if(!normal_jRadioButton.isSelected() && !mall_jRadioButton.isSelected() && !k_shipping_jRadioButton.isSelected()&& !k_discount_jRadioButton.isSelected()){
                 JOptionPane.showMessageDialog(this, "Please, select the type", "Warning", 2);
                 return true;
             }
@@ -417,11 +420,16 @@ public class CouponFrame extends javax.swing.JFrame {
                 discount_textField.setText("37");
                 min_textField.setEnabled(true);
                 max_textField.setText("37");
+                k_shipping_jRadioButton.setEnabled(true);
+                k_discount_jRadioButton.setEnabled(false);
+                
             }
             case 1 -> {    
                 discount_textField.setEnabled(true);
                 min_textField.setEnabled(true);
                 max_textField.setText(discount_textField.getText());
+                k_discount_jRadioButton.setEnabled(true);
+                k_shipping_jRadioButton.setEnabled(false);
                 if((Integer.parseInt(min_textField.getText()) < 0) || (Integer.parseInt(min_textField.getText()) < Integer.parseInt(discount_textField.getText()))){
                     JOptionPane.showMessageDialog(this, "Min is incorrect!", "Warning", 2);
                     pass = true;
@@ -431,6 +439,8 @@ public class CouponFrame extends javax.swing.JFrame {
                 discount_textField.setEnabled(true);
                 min_textField.setEnabled(true);
                 max_textField.setEnabled(true);
+                k_discount_jRadioButton.setEnabled(true);
+                k_shipping_jRadioButton.setEnabled(false);
                 if((Integer.parseInt(max_textField.getText()) < 0) || (Integer.parseInt(max_textField.getText()) < Integer.parseInt(min_textField.getText()))){
                     JOptionPane.showMessageDialog(this, "Max is incorrect!", "Warning", 2);
                     pass = true;
@@ -566,16 +576,25 @@ public class CouponFrame extends javax.swing.JFrame {
                 discount_textField.setEnabled(false);
                 min_textField.setEnabled(true);
                 max_textField.setEnabled(false);
+                shopType.clearSelection();
+                k_shipping_jRadioButton.setEnabled(true);
+                k_discount_jRadioButton.setEnabled(false);
             }
             case 1 -> {
                 discount_textField.setEnabled(true);
                 min_textField.setEnabled(true);
                 max_textField.setEnabled(false);
+                shopType.clearSelection();
+                k_shipping_jRadioButton.setEnabled(false);
+                k_discount_jRadioButton.setEnabled(true);
             }
             case 2 -> {
                 discount_textField.setEnabled(true);
                 min_textField.setEnabled(true);
                 max_textField.setEnabled(true);
+                shopType.clearSelection();
+                k_shipping_jRadioButton.setEnabled(false);
+                k_discount_jRadioButton.setEnabled(true);
             }
             default -> {
             }

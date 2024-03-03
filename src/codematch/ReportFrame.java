@@ -4,6 +4,9 @@
  */
 package codematch;
 
+import java.awt.Image;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author nonpr
@@ -15,8 +18,12 @@ public class ReportFrame extends javax.swing.JFrame {
      */
     public ReportFrame() {
         initComponents();
+        setLogoImage();
     }
-
+    protected void setLogoImage(){
+        Image icon = new ImageIcon(this.getClass().getResource("/pic/CodeMatch_logo.png")).getImage();
+        this.setIconImage(icon);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

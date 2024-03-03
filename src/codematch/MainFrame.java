@@ -5,7 +5,9 @@
 package codematch;
 
 
+import java.awt.Image;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,7 +21,14 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
+        setLogoImage();
+
     }
+    protected void setLogoImage(){
+        Image icon = new ImageIcon(this.getClass().getResource("/pic/CodeMatch_logo.png")).getImage();
+        this.setIconImage(icon);
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
